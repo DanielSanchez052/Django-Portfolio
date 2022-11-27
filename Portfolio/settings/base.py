@@ -1,4 +1,5 @@
 import os
+import datetime
 from pathlib import Path
 from decouple import config
 from Portfolio.settings.adminConfig import JAZZMIN_SETTINGS
@@ -22,6 +23,7 @@ BASE_APPS = [
 
 THIRD_APPS = [
     'debug_toolbar',
+    'import_export',
 ]
 
 LOCAL_APPS = [
@@ -126,3 +128,31 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # Jazzmin Config
 JAZZMIN_SETTINGS = JAZZMIN_SETTINGS
+
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'handlers': {
+        'debug_file': {
+            'level': 'DEBUG',
+            'class': 'logging.FileHandler',
+            'filename': 'debug.log',
+        },
+        'error_file': {
+            'level': 'DEBUG',
+            'class': 'logging.FileHandler',
+            'filename': 'error.log',
+        },
+        'console': {
+            'class': 'logging.StreamHandler',
+        },
+    },
+    'loggers': {
+        'django': {
+            'handlers': ['console'],
+            'level': os.getenv('DJANGO_LOG_LEVEL', 'INFO'),
+            'propagate': False,
+        },
+    },
+}

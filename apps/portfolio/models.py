@@ -1,4 +1,5 @@
 from django.db import models
+from django.db.models.functions import Lower
 
 # Create your models here.
 
@@ -30,14 +31,42 @@ class ProjectModel(models.Model):
         return self.slug
 
 
+class GeneralConfigManager(models.Manager):
+    def get_content_dict(self, filter=None):
+        """
+            return a dictionary for a content in general config where section is a key
+            {
+                section:[
+                    {key:value},
+                    {key:value},
+                    {key:value},
+                ]
+            }
+        """
+        content_dict = dict()
+        contents = self.all()
+
+        if filter:
+            contents = self.filter(section=filter)
+
+        for content in contents:
+            if content.section not in content_dict:
+                content_dict[content.section] = list()
+            content_dict[content.section].append(
+                ({content.key: content.value}))
+        return content_dict
+
+
 class GeneralConfigModel(models.Model):
-    key = models.CharField(max_length=255)
-    value = models.CharField(max_length=500)
-    section = models.CharField(max_length=150)
+    key = models.CharField('key', max_length=255)
+    value = models.TextField('value')
+    section = models.CharField('section', max_length=150)
+    objects = GeneralConfigManager()
 
     class Meta:
-        verbose_name = 'General Config'
-        verbose_name_plural = 'General Config'
+        verbose_name = 'Content'
+        verbose_name_plural = 'Content'
+        unique_together = ['key', 'section']
 
     def __str__(self) -> str:
         return f'{self.section}|{self.key}'

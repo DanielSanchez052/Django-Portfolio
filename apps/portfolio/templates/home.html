@@ -1,0 +1,48 @@
+{% extends 'layout.html' %}
+{% block content %}
+{% load template_filter %}
+{% load static %}
+{% get_media_prefix as MEDIA_PREFIX%} 
+{% content as content%}
+
+<header class="row bg-black">
+  <div class="col-md-4">
+    <img src="{{MEDIA_PREFIX}}{{content.HEADER|get_dict:'PROFILE_IMAGE'}}" class='img-fluid'/>
+  </div>  
+
+  <div class="col-md-8 my-auto p-4">
+    <h1>{{content.HEADER|get_dict:'TITLE'|safe}}</h1>
+    <h3>{{content.HEADER|get_dict:'SUBTITLE'|safe}}</h3>
+    <p>{{content.HEADER|get_dict:'DESCRIPTION'|safe}}</p>
+    <a class="btn btn-primary btn-lg rounded-0 my-3" href="{{MEDIA_PREFIX}}{{content.PORTFOLIO|get_dict:'CV_URL'}}">Download my CV</a>
+  </div>
+</header>
+
+<!-- Porfolio Section -->
+<div class="row my-4 text-center">
+  
+  <h3>{{content.PORTFOLIO|get_dict:'TITLE'|safe}}</h3> 
+  <p>{{content.PORTFOLIO|get_dict:'DESCRIPTION'|safe}}</p>
+
+  {% for project in object_list%}
+  <div class="col-md-4 p-4">
+    <div class="card bg-black card-project">
+      <img src="{{project.image.url }}" class="card-img-top" />
+
+      <div class="card-body">
+
+        <h2>{{ project.title }}</h2>
+        <p>{{ project.description|truncatechars:150 }}</p>
+
+        {% if project.url %}
+        <a href="{{project.url}}" class="btn btn-light rounded-0 btn-sm" target="__blank" rel="noreferrer">Visit the
+          Project</a>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+  {% endfor %}
+</div>
+
+
+{% endblock %}
