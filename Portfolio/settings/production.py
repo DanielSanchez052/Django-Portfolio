@@ -4,7 +4,7 @@ from .base import *
 DEBUG = config('DEBUG', default=True, cast=bool)
 
 ALLOWED_HOSTS = [config('WEBSITE_HOSTNAME')
-                 ] if 'WEBSITE_HOSTNAME' in config else []
+                 ] if 'WEBSITE_HOSTNAME' in os.environ else []
 CSRF_TRUSTED_ORIGINS = ['https://' + config('WEBSITE_HOSTNAME')
                         ] if 'WEBSITE_HOSTNAME' in os.environ else []
 
