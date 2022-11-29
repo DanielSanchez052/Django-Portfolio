@@ -22,27 +22,31 @@
 <div class="row my-4 text-center">
   
   <h3>{{content.PORTFOLIO|get_dict:'TITLE'|safe}}</h3> 
-  <p>{{content.PORTFOLIO|get_dict:'DESCRIPTION'|safe}}</p>
+  {% if object_list.count > 0 %}
+    {% for project in object_list%}
+    <p>{{content.PORTFOLIO|get_dict:'DESCRIPTION'|safe}}</p>
+    <div class="col-md-4 p-4" id='project'>
+      <div class="card bg-black card-project"  style="width: 18rem;">
+        <img src="{{project.image.url }}" class="card-img-top" />
 
-  {% for project in object_list%}
-  <div class="col-md-4 p-4">
-    <div class="card bg-black card-project">
-      <img src="{{project.image.url }}" class="card-img-top" />
+        <div class="card-body">
 
-      <div class="card-body">
+          <h2>{{ project.title }}</h2>
+          <p>{{ project.description|truncatechars:150 }}</p>
 
-        <h2>{{ project.title }}</h2>
-        <p>{{ project.description|truncatechars:150 }}</p>
-
-        {% if project.url %}
-        <a href="{{project.url}}" class="btn btn-light rounded-0 btn-sm" target="__blank" rel="noreferrer">Visit the
-          Project</a>
-        {% endif %}
+        </div>
+        <div class="card-footer bg-transparent border-success">{{project.get_status_display}}</div>
       </div>
     </div>
-  </div>
-  {% endfor %}
-</div>
+    {% endfor %}
+  {% else %}
+    <p class="pt-4">{{content.PORTFOLIO|get_dict:'TEXT_NO_PROJECTS'|safe}}</p>
+  {% endif %}
 
+  
+</div>
+<div id='detail_project'>
+
+</div>
 
 {% endblock %}

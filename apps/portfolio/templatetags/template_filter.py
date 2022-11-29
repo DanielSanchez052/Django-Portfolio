@@ -5,8 +5,9 @@ register = template.Library()
 
 @register.filter
 def get_dict(arr, key):
+
     for item in arr:
-        if key in item:
+        if key in item.keys():
             return item[key]
     return ''
 

@@ -1,5 +1,5 @@
 from django.db import models
-from django.db.models.functions import Lower
+from django.urls import reverse
 
 # Create your models here.
 
@@ -30,6 +30,9 @@ class ProjectModel(models.Model):
     def __str__(self) -> str:
         return self.slug
 
+    # def get_absolute_url(self):
+    #     return reverse("project_detail", kwargs={"slug": self.slug})
+
 
 class GeneralConfigManager(models.Manager):
     def get_content_dict(self, filter=None):
@@ -52,6 +55,7 @@ class GeneralConfigManager(models.Manager):
         for content in contents:
             if content.section not in content_dict:
                 content_dict[content.section] = list()
+
             content_dict[content.section].append(
                 ({content.key: content.value}))
         return content_dict
