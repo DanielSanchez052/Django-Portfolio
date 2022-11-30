@@ -70,7 +70,6 @@ class GeneralConfigModel(models.Model):
     class Meta:
         verbose_name = 'Content'
         verbose_name_plural = 'Content'
-        unique_together = ['key', 'section']
 
     def __str__(self) -> str:
         return f'{self.section}|{self.key}'

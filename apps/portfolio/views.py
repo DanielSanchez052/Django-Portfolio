@@ -3,8 +3,6 @@ from django.views.generic import ListView, DetailView
 
 from apps.portfolio.models import ProjectModel
 
-logger = logging.getLogger(__name__)
-
 
 class HomeView(ListView):
     model = ProjectModel
