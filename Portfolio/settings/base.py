@@ -24,6 +24,7 @@ BASE_APPS = [
 THIRD_APPS = [
     'debug_toolbar',
     'import_export',
+    'storages',
 ]
 
 LOCAL_APPS = [
@@ -36,7 +37,7 @@ INSTALLED_APPS = BASE_APPS + THIRD_APPS + LOCAL_APPS
 MIDDLEWARE = [
     "debug_toolbar.middleware.DebugToolbarMiddleware",
     'django.middleware.security.SecurityMiddleware',
-    'whitenoise.middleware.WhiteNoiseMiddleware',
+    #    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -117,8 +118,20 @@ MEDIA_ROOT = os.path.join(
     BASE_DIR, config('MEDIA_ROOT', default='media_root')
 )
 
-STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
+# Azure Blob storage
+DEFAULT_FILE_STORAGE = 'Portfolio.custom_azure.AzureMediaStorage'
+STATICFILES_STORAGE = 'Portfolio.custom_azure.AzureStaticStorage'
+
+
+STATIC_LOCATION = config('STATIC_ROOT', default='static')
+MEDIA_LOCATION = config('MEDIA_ROOT', default='media_root')
+
+
+AZURE_ACCOUNT_NAME = config('AZURE_ACCOUNT_NAME')
+AZURE_CUSTOM_DOMAIN = f'{AZURE_ACCOUNT_NAME}.blob.core.windows.net'
+STATIC_URL = f'https://{AZURE_CUSTOM_DOMAIN}/{STATIC_LOCATION}/'
+MEDIA_URL = f'https://{AZURE_CUSTOM_DOMAIN}/{MEDIA_LOCATION}/'
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
@@ -132,26 +145,3 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # Jazzmin Config
 JAZZMIN_SETTINGS = JAZZMIN_SETTINGS
-
-# LOGGING = {
-#     'version': 1,
-#     'disable_existing_loggers': False,
-#     'filters': {
-#         'require_debug_false': {
-#             '()': 'django.utils.log.RequireDebugFalse'
-#         }
-#     },
-#     'handlers': {
-#         'logfile': {
-#             'class': 'logging.handlers.WatchedFileHandler',
-#             'filename': '/home/s4nchez/programacion/Django/portfolio\myapp.log'
-#         }
-#     },
-#     'loggers': {
-#         'django': {
-#             'handlers': ['logfile'],
-#             'level': 'ERROR',
-#             'propagate': False,
-#         }
-#     }
-# }
